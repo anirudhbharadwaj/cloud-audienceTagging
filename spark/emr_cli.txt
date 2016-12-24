@@ -1,0 +1,6 @@
+aws emr create-cluster --termination-protected --applications Name=Hadoop Name=Spark ^
+--ec2-attributes "{\"KeyName\":\"<your key>\",\"InstanceProfile\":\"EMR_EC2_DefaultRole\",\"SubnetId\":\"subnet-41e6b518\",\"EmrManagedSlaveSecurityGroup\":\"sg-71d46d16\",\"EmrManagedMasterSecurityGroup\":\"sg-72d46d15\"}" ^
+--release-label emr-5.2.0 --log-uri s3n://aws-logs-991242115855-us-west-2/elasticmapreduce/ ^
+--steps "[{\"Args\":[\"spark-submit\",\"--deploy-mode\",\"cluster\",\"s3://anitest1/spark1/cluster_cf.py\"],\"Type\":\"CUSTOM_JAR\",\"ActionOnFailure\":\"TERMINATE_CLUSTER\",\"Jar\":\"command-runner.jar\",\"Properties\":\"\",\"Name\":\"Spark 1\"}]" ^
+--instance-groups "[{\"InstanceCount\":1,\"InstanceGroupType\":\"CORE\",\"InstanceType\":\"m3.xlarge\",\"Name\":\"Core - 2\"},{\"InstanceCount\":1,\"InstanceGroupType\":\"MASTER\",\"InstanceType\":\"m3.xlarge\",\"Name\":\"Master - 1\"}]" ^
+--auto-terminate --service-role EMR_DefaultRole --enable-debugging --name 'cloud_demo' --region us-west-2
